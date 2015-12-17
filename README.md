@@ -32,3 +32,7 @@ A few python programs using opencv with a webcam.
 ## habitodo
 
 An outdated and incomplete api wrapper in python for habitrpg.
+
+## Lingo
+
+An incomplete game that I started a while ago.
