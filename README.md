@@ -24,3 +24,7 @@ Some code doodling for python games from the website with a similar name.
 ## iyocgwp
 
 A collection of some codes for inventwithpython.
+
+## webcam
+
+A few python programs using opencv with a webcam.
