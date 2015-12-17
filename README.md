@@ -28,3 +28,7 @@ A collection of some codes for inventwithpython.
 ## webcam
 
 A few python programs using opencv with a webcam.
+
+## habitodo
+
+An outdated and incomplete api wrapper in python for habitrpg.
