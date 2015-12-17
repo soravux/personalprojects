@@ -36,3 +36,7 @@ An outdated and incomplete api wrapper in python for habitrpg.
 ## Lingo
 
 An incomplete game that I started a while ago.
+
+## reddit
+
+Fun with data collection.
