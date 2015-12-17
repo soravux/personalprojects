@@ -12,3 +12,7 @@ Randomly tries to recreate an image using randomness. very useless.
 ## euler
 
 Scripts to solve some of the challenges of the euler project.
+
+## orbduino
+
+A partial program with a partial api to control the defunct orbduino with a joystick.
