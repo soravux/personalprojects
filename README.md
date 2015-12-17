@@ -16,3 +16,7 @@ Scripts to solve some of the challenges of the euler project.
 ## orbduino
 
 A partial program with a partial api to control the defunct orbduino with a joystick.
+
+## programarcadegames
+
+Some code doodling for python games from the website with a similar name.

@@ -1,0 +1,5 @@
+print('Area of a trapezoid')
+height = int(input('Enter the height of the trapezoid: '))
+lengthbottom = int(input('Enter the length of the bottom base: '))
+lengthtop = int(input('Enter the length of the top base: '))
+print('The area is:', height*(lengthbottom+lengthtop)/2)
