@@ -40,3 +40,7 @@ An incomplete game that I started a while ago.
 ## reddit
 
 Fun with data collection.
+
+## Out of Love
+
+A cute game about a parasite who devours humans.
