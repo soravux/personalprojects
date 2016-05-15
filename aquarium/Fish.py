@@ -74,7 +74,19 @@ class Fish():
             else:
                 self.move()
     def draw(self):
+        basePos1 = (-self.size*1.5, self.size)
+        basePos2 = (-self.size*1.5, -self.size)
+        rotMat = ((math.cos(self.angle), -math.sin(self.angle)),
+                  (math.sin(self.angle),  math.cos(self.angle)))
+        newPos1 = (round(rotMat[0][0]*basePos1[0] + rotMat[0][1] * basePos1[1])+self.currentPos[0], 
+                   round(rotMat[1][0]*basePos1[0] + rotMat[1][1] * basePos1[1])+self.currentPos[1])
+
+        newPos2 = (round(rotMat[0][0]*basePos2[0] + rotMat[0][1] * basePos2[1])+self.currentPos[0], 
+                   round(rotMat[1][0]*basePos2[0] + rotMat[1][1] * basePos2[1])+self.currentPos[1])
+        # the main body
         pygame.draw.circle(self.windowRef, self.color, self.currentPos, self.size)
+        # the tail
+        pygame.draw.polygon(self.windowRef, self.color, (newPos1, newPos2, self.currentPos))
        
 
 
