@@ -3,8 +3,13 @@ import math
 import pygame
 import random
 from itertools import accumulate
+from enum import Enum
 
-possibleStates = ('nothing', 'moving', 'seeking food')
+
+class PossibleStates(Enum):
+    nothing = 1
+    moving = 2
+    seeking_food = 3
 
 
 class Fish():
@@ -18,7 +23,7 @@ class Fish():
         self.goalPos = self.currentPos
         self.posTup = tuple()  # a tuple containing the position values
         self.moveTime = 50  # the time to move in frames
-        self.state = possibleStates[0]  # defaults to nothing
+        self.state = PossibleStates.nothing  # defaults to nothing
         self.frameTimer = 0  # number of frame before decision
         self.color = startingColor  # the color in rgb
         self.size = startingSize  # the size in pixels
@@ -48,7 +53,7 @@ class Fish():
         deltaPos = (self.goalPos[0] - self.currentPos[0],
                     self.goalPos[1] - self.currentPos[1])
         self.angle = math.atan2(deltaPos[1], deltaPos[0])
-        self.state = possibleStates[1]
+        self.state = PossibleStates.moving
 
     def move(self):
         self.currentPos = (round(self.posTup[self.currentPosNum][0]),
@@ -57,24 +62,24 @@ class Fish():
 
     def act(self):
 
-        if self.state != possibleStates[2] and self.worldRef.isFoodAvailable():
+        if self.state != PossibleStates.seeking_food and self.worldRef.isFoodAvailable():
             # food is available, move to it if too far
             pass
-        elif self.state == possibleStates[0] and self.frameTimer > 0:
+        elif self.state == PossibleStates.nothing and self.frameTimer > 0:
             # decrement the timer
             self.frameTimer -= 1
-        elif self.state == possibleStates[0]:
+        elif self.state == PossibleStates.nothing:
             # timer is up, start moving
             self.setMove()
-        elif self.state in (possibleStates[1], possibleStates[2]):
+        elif self.state in (PossibleStates.moving, PossibleStates.seeking_food):
             # currently moving
             # first, checks if at goal Pos, stops moving
             if self.currentPosNum == self.moveTime:
                 self.currentPos = self.goalPos
-                if self.state != possibleStates[2]:
+                if self.state != PossibleStates.seeking_food:
                     # if seeking food, no pause
                     self.frameTimer = random.randint(0, 90)
-                self.state = possibleStates[0]
+                self.state = PossibleStates.nothing
             else:
                 self.move()
 
