@@ -6,7 +6,9 @@ from itertools import accumulate
 
 possibleStates = ('nothing', 'moving', 'seeking food')
 
+
 class Fish():
+
     def __init__(self, startingPos, startingColor, startingSize, theWorld, theWindow):
         self.currentPos = startingPos
         self.currentPosNum = 0
@@ -14,12 +16,12 @@ class Fish():
         self.worldRef = theWorld
         self.windowRef = theWindow
         self.goalPos = self.currentPos
-        self.posTup = tuple() # a tuple containing the position values
-        self.moveTime = 50 # the time to move in frames
-        self.state = possibleStates[0] #defaults to nothing
-        self.frameTimer = 0; # number of frame before decision
-        self.color = startingColor # the color in rgb
-        self.size = startingSize # the size in pixels
+        self.posTup = tuple()  # a tuple containing the position values
+        self.moveTime = 50  # the time to move in frames
+        self.state = possibleStates[0]  # defaults to nothing
+        self.frameTimer = 0  # number of frame before decision
+        self.color = startingColor  # the color in rgb
+        self.size = startingSize  # the size in pixels
 
     def chooseNextRandomPos(self):
         worldDimensions = self.worldRef.getScreenSize()
@@ -27,14 +29,16 @@ class Fish():
                         random.randint(0, worldDimensions[1]))
 
     def setTrajectoryPosList(self):
-        delta = (self.goalPos[0]-self.currentPos[0],
-                 self.goalPos[1]-self.currentPos[1])
+        delta = (self.goalPos[0] - self.currentPos[0],
+                 self.goalPos[1] - self.currentPos[1])
         poissonks = range(self.moveTime)
-        lamb = self.moveTime/4;
-        poissonXd = accumulate(delta[0] * math.e**(-lamb) * lamb**i/math.factorial(i) for i in range(self.moveTime))
-        poissonX = (x+self.currentPos[0] for x in poissonXd)
-        poissonYd = accumulate(delta[1] * math.e**(-lamb) * lamb**i/math.factorial(i) for i in range(self.moveTime))
-        poissonY = (y+self.currentPos[1] for y in poissonYd)
+        lamb = self.moveTime / 4
+        poissonXd = accumulate(
+            delta[0] * math.e**(-lamb) * lamb**i / math.factorial(i) for i in range(self.moveTime))
+        poissonX = (x + self.currentPos[0] for x in poissonXd)
+        poissonYd = accumulate(
+            delta[1] * math.e**(-lamb) * lamb**i / math.factorial(i) for i in range(self.moveTime))
+        poissonY = (y + self.currentPos[1] for y in poissonYd)
         self.posTup = tuple(zip(poissonX, poissonY))
 
     def setMove(self):
@@ -50,7 +54,7 @@ class Fish():
         self.currentPos = (round(self.posTup[self.currentPosNum][0]),
                            round(self.posTup[self.currentPosNum][1]))
         self.currentPosNum += 1
-        
+
     def act(self):
 
         if self.state != possibleStates[2] and self.worldRef.isFoodAvailable():
@@ -73,20 +77,20 @@ class Fish():
                 self.state = possibleStates[0]
             else:
                 self.move()
+
     def draw(self):
-        basePos1 = (-self.size*1.5, self.size)
-        basePos2 = (-self.size*1.5, -self.size)
+        basePos1 = (-self.size * 1.5, self.size)
+        basePos2 = (-self.size * 1.5, -self.size)
         rotMat = ((math.cos(self.angle), -math.sin(self.angle)),
                   (math.sin(self.angle),  math.cos(self.angle)))
-        newPos1 = (round(rotMat[0][0]*basePos1[0] + rotMat[0][1] * basePos1[1])+self.currentPos[0], 
-                   round(rotMat[1][0]*basePos1[0] + rotMat[1][1] * basePos1[1])+self.currentPos[1])
+        newPos1 = (round(rotMat[0][0] * basePos1[0] + rotMat[0][1] * basePos1[1]) + self.currentPos[0],
+                   round(rotMat[1][0] * basePos1[0] + rotMat[1][1] * basePos1[1]) + self.currentPos[1])
 
-        newPos2 = (round(rotMat[0][0]*basePos2[0] + rotMat[0][1] * basePos2[1])+self.currentPos[0], 
-                   round(rotMat[1][0]*basePos2[0] + rotMat[1][1] * basePos2[1])+self.currentPos[1])
+        newPos2 = (round(rotMat[0][0] * basePos2[0] + rotMat[0][1] * basePos2[1]) + self.currentPos[0],
+                   round(rotMat[1][0] * basePos2[0] + rotMat[1][1] * basePos2[1]) + self.currentPos[1])
         # the main body
-        pygame.draw.circle(self.windowRef, self.color, self.currentPos, self.size)
+        pygame.draw.circle(self.windowRef, self.color,
+                           self.currentPos, self.size)
         # the tail
-        pygame.draw.polygon(self.windowRef, self.color, (newPos1, newPos2, self.currentPos))
-       
-
-
+        pygame.draw.polygon(self.windowRef, self.color,
+                            (newPos1, newPos2, self.currentPos))

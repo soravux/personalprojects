@@ -1,6 +1,8 @@
 # This is the world class, it serves to model tons of stuff
 
+
 class World():
+
     def __init__(self, screenSize, FishList):
         self.fishList = FishList
         self.screenSize = screenSize
@@ -10,7 +12,7 @@ class World():
             fish.act()
 
     def isFoodAvailable(self):
-        #TODO
+        # TODO
         return False
 
     def drawStuff(self):
