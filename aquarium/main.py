@@ -11,7 +11,7 @@ from pygame.locals import *
 from Fish import Fish
 from World import World
 
-RESOLUTION = (800, 600)
+RESOLUTION = (1024, 768)
 GAMENAME = 'Aquarium'
 BGCOLOR = (0, 0, 0)
 
@@ -29,23 +29,24 @@ pygame.display.set_caption(GAMENAME)
 isPlaying = True
 
 
-fishList = [];
+fishList = []
 algaeList = []
-theWorld = World(fishList, algaeList)
-fishList.append(Fish((400, 400), theWorld))
+theWorld = World(RESOLUTION, fishList)
+fishList.append(Fish((400, 400), theWorld, window))
+fishList.append(Fish((300, 300), theWorld, window))
 
 
 while isPlaying:
     window.fill(BGCOLOR)
-
-
-
 
 # not much to do here, since it's mostly all automatic
     for event in pygame.event.get():
         if event.type == QUIT:
             isPlaying = False;
     
+    theWorld.update()
+    theWorld.drawStuff()
+
     pygame.display.update()
     fpsClock.tick(30)
 
