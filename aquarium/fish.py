@@ -22,11 +22,12 @@ class Fish():
         self.windowRef = theWindow
         self.goalPos = self.currentPos
         self.posTup = tuple()  # a tuple containing the position values
-        self.moveTime = 50  # the time to move in frames
+        self.moveTime = round(random.random() * 120 + 50)  # the time to move in frames
         self.state = PossibleStates.nothing  # defaults to nothing
         self.frameTimer = 0  # number of frame before decision
         self.color = startingColor  # the color in rgb
         self.size = startingSize  # the size in pixels
+        self.wait_time = lambda: random.randint(0, 90)
 
     def chooseNextRandomPos(self):
         worldDimensions = self.worldRef.getScreenSize()
@@ -78,7 +79,7 @@ class Fish():
                 self.currentPos = self.goalPos
                 if self.state != PossibleStates.seeking_food:
                     # if seeking food, no pause
-                    self.frameTimer = random.randint(0, 90)
+                    self.frameTimer = self.wait_time()
                 self.state = PossibleStates.nothing
             else:
                 self.move()
