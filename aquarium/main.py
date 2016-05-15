@@ -35,8 +35,8 @@ algaeList = []
 theWorld = World(RESOLUTION, fishList)
 for i in range(20):
     theColor = tuple(random.randint(0, 255) for i in range(3))
-    theSize = random.randint(0, 20) + 5 
-    thePos = tuple(i*10 for k in range(2))
+    theSize = random.randint(0, 20) + 5
+    thePos = tuple(i * 10 for k in range(2))
     fishList.append(Fish(thePos, theColor, theSize, theWorld, window))
 
 
@@ -50,7 +50,7 @@ while isPlaying:
             isPlaying = False
         if event.type == QUIT:
             isPlaying = False
-    
+
     theWorld.update()
     theWorld.drawStuff()
 
