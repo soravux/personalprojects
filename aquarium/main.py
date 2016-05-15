@@ -9,8 +9,8 @@ import socket
 import threading
 from pygame.locals import *
 
-from Fish import Fish
-from World import World
+from fish import Fish
+from world import World
 
 RESOLUTION = (1024, 768)
 GAMENAME = 'Aquarium'
@@ -45,8 +45,11 @@ while isPlaying:
 
 # not much to do here, since it's mostly all automatic
     for event in pygame.event.get():
+        pressed = pygame.key.get_pressed()
+        if pressed[pygame.K_q]:
+            isPlaying = False
         if event.type == QUIT:
-            isPlaying = False;
+            isPlaying = False
     
     theWorld.update()
     theWorld.drawStuff()
