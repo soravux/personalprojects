@@ -2,6 +2,7 @@
 
 import pygame
 import sys
+import random
 
 # for networked information, TODO later
 import socket
@@ -32,8 +33,11 @@ isPlaying = True
 fishList = []
 algaeList = []
 theWorld = World(RESOLUTION, fishList)
-fishList.append(Fish((400, 400), theWorld, window))
-fishList.append(Fish((300, 300), theWorld, window))
+for i in range(20):
+    theColor = tuple(random.randint(0, 255) for i in range(3))
+    theSize = random.randint(0, 20) + 5 
+    thePos = tuple(i*10 for k in range(2))
+    fishList.append(Fish(thePos, theColor, theSize, theWorld, window))
 
 
 while isPlaying:

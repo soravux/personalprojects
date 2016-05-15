@@ -7,7 +7,7 @@ from itertools import accumulate
 possibleStates = ('nothing', 'moving', 'seeking food')
 
 class Fish():
-    def __init__(self, startingPos, theWorld, theWindow):
+    def __init__(self, startingPos, startingColor, startingSize, theWorld, theWindow):
         self.currentPos = startingPos
         self.currentPosNum = 0
         self.angle = 0
@@ -18,8 +18,8 @@ class Fish():
         self.moveTime = 50 # the time to move in frames
         self.state = possibleStates[0] #defaults to nothing
         self.frameTimer = 0; # number of frame before decision
-        self.color = (255, 255, 255) # the color in rgb
-        self.size = 10 # the size in pixels
+        self.color = startingColor # the color in rgb
+        self.size = startingSize # the size in pixels
 
     def chooseNextRandomPos(self):
         worldDimensions = self.worldRef.getScreenSize()
