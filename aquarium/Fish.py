@@ -1,77 +1,71 @@
 # This is the base fish class
 import math
+import random
+from itertools import accumulate
+
+possibleStates = ('nothing', 'moving', 'seeking food')
 
 class Fish():
-    def __init__(self, startingPosition, theWorld):
-        self.health = 100 # in percentage
-        self.speed = 1 # in pixels per second
-        self.hunger = 0 # in percentage
-        self.eggLayingPeriod = 10 # in minutes
-        self.eggHatchPeriod = 10
-        self.attackRadius = 10
-        self.diet = 'vegetarian' #the other is 'piscivorous'
-        self.name = 'fish'
-        self.isAValidFish = True
-        self.state = None
-        self.position = startingPosition
-        self.lastDecisionTime = 0
-        self.lastLaidTime = 0
-        self.theWorld = theWorld
+    def __init__(self, startingPos, theWorld):
+        self.currentPos = startingPos
+        self.currentPosNum = 0
+        self.angle = 0
+        self.worldRef = theWorld
+        self.goalPos = self.currentPos
+        self.posTup = tuple() # a tuple containing the position values
+        self.moveTime = 90 # the time to move in frames
+        self.state = possibleStates[0] #defaults to nothing
+        self.frameTimer = 0; # number of frame before decision
 
-    def isDead(self):
-        if self.health <= 0:
-            return True
-        else:
-            return False
+    def chooseNextRandomPos(self):
+        worldDimensions = self.worldRef.getScreenSize()
+        self.goalPos = (random.randint(0, self.worldDimensions[0]),
+                        random.randint(0, self.worldDimensions[1]))
 
-    def isHungry(self):
-        if self.hunger >= 80:
-            return True
-        else:
-            return False
+    def setTrajectoryPosList(self):
+        delta = self.goalPos-self.currentPos
+        poissonks = range(self.moveTime)
+        lamb = moveTime/3;
+        poissonXd = accumulate(delta[0] * math.e**(-lamb) * lamb^i/math.factorial(i) for i in range(self.moveTime))
+        poissonX = x+self.currentPos[0] for x in poissonXd
+        poissonYd = accumulate(delta[1] * math.e**(-lamb) * lamb^i/math.factorial(i) for i in range(self.moveTime))
+        poissonY = y+self.currentPos[0] for y in poissonYd
+        self.posTup = tuple(zip(poissonX, poissonY))
 
-    def isSatiated(self):
-        if self.hunger <= 20:
-            return True
-        else:
-            return False
-
-    def updateGoalPosition(self, newGoalPosition):
-        self.goalPosition = newGoalPosition
-
-    def eat(self, nutritionValue):
-        self.hunger -= nutritionValue
-        self.hunger = max(self.hunger, 0)
-
-    def isWorth(self):
-        return self.health-self.hunger
-
-    def isAbleToLay(self):
-        return self.hunger < 30
+    def setMove(self):
+        self.chooseNextRandomPos()
+        self.setTrajectoryPosList()
+        self.currentPosNum = 0
+        deltaPos = self.goalPos - self.currentPos
+        self.angle = math.atan2(deltaPos[1], deltaPos[0])
+        self.state = possibleStates[1]
 
     def move(self):
-        newPosition = self.position + (self.speed/30 * math.cos(self.angle), self.speed/30*math.sin(self.angle))
-
-        if self.theWorld.collide(newPosition):
-            self.state = 'none'
-        else:
-            self.position = newPosition
-
+        self.currentPos = self.posTup[currentPosNum]
+        self.currentPosNum += 1
+        
     def act(self):
-        ''' This is where most of the work is done'''
-        if self.state == 'laying':
-            self.hasJustLaid = True
-            self.hunger += 30
-            self.lastLaidTime = pygame.time.get_ticks
-            self.state = 'none'
 
-        elif self.state == 'wandering':
+        if self.state != possibleStates[2] && self.worldRef.isfoodAvailable():
+            # food is available, move to it if too far
             pass
-
-        elif self.state == 'preying':
-            pass
-
-        elif self.state == 'none':
-            pass
+        elif self.state == possibleStates[0] && self.frameTimer > 0:
+            # decrement the timer
+            self.frameTimer -= 1
+        elif self.state == possibleStates[0]:
+            # timer is up, start moving
+            self.setMove()
+        elif self.state in (possibleStates[1], possibleStates[2]):
+            # currently moving
+            # first, checks if at goal Pos, stops moving
+            if self.goalPosNum == self.moveTime:
+                self.currentPos = self.goalPos
+                if self.state != possibleStates[2]:
+                    # if seeking food, no pause
+                    self.frameTimer = random.randint(90)
+                self.state = possibleStates[0]
+            else
+              self.move()
+       
 
 
